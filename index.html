@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator — SENAI</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ─── Header ─────────────────────────────────────────────────── -->
+  <header>
+    <div class="header-brand">
+      <i data-lucide="qr-code"></i>
+      QR Code Generator
+    </div>
+    <span class="header-badge">SENAI</span>
+  </header>
+
+  <!-- ─── Main ───────────────────────────────────────────────────── -->
+  <main>
+
+    <!-- Card de geração -->
+    <div class="card">
+      <div class="card-title">
+        <i data-lucide="plus-circle"></i>
+        Gerar novo QR Code
+      </div>
+      <div class="input-row">
+        <div class="input-wrap">
+          <span class="input-icon"><i data-lucide="link"></i></span>
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="Cole uma URL ou digite um texto..."
+            autocomplete="off"
+            aria-label="URL ou texto para gerar QR Code"
+          />
+        </div>
+        <button class="btn-primary" id="btnGenerate" onclick="generate()" aria-label="Gerar QR Code">
+          <i data-lucide="scan-line" id="btnIcon"></i>
+          <span class="spinner" id="spinner"></span>
+          Gerar
+        </button>
+      </div>
+
+      <!-- Seção do QR gerado (escondida inicialmente) -->
+      <div class="qr-section" id="qrSection">
+        <div class="qr-frame">
+          <div id="qrBox"></div>
+          <div class="qr-label" id="qrLabel"></div>
+          <div class="qr-actions">
+            <button class="btn-secondary" onclick="downloadQR()" aria-label="Baixar imagem">
+              <i data-lucide="download"></i>
+              Baixar PNG
+            </button>
+            <button class="btn-secondary" onclick="copyCurrentURL()" aria-label="Copiar URL">
+              <i data-lucide="copy"></i>
+              Copiar URL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card do histórico -->
+    <div class="card">
+      <div class="list-header">
+        <div class="card-title" style="margin-bottom:0">
+          <i data-lucide="history"></i>
+          Historico
+          <span class="count-badge" id="countBadge">0</span>
+        </div>
+      </div>
+
+      <!-- Barra de status da conexão -->
+      <div class="status-bar offline" id="statusBar">
+        <span class="status-dot"></span>
+        <span id="statusText">Verificando conexao...</span>
+      </div>
+
+      <div id="listContainer">
+        <div class="empty-state" id="emptyState">
+          <i data-lucide="inbox"></i>
+          <p>Nenhum QR Code gerado ainda</p>
+          <span>Cole uma URL acima para comecar</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── Toast ──────────────────────────────────────────────────── -->
+  <div class="toast" id="toast">
+    <span id="toastMsg"></span>
+  </div>
+</body>
+<script src="script.js"></script>
+</html>
